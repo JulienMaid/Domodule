@@ -37,6 +37,12 @@ TimerEvent_t & TimerEvent_t::operator=(TimerEvent_t const & Timer)
 {
   memcpy(this, &Timer, sizeof(TimerEvent_t));
 
+  if (TimerExists(this) == true)
+  {
+    TimerDelete(this);
+    this->InsertTimer();
+  }
+
   return *this;
 }
 
