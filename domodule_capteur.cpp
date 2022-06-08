@@ -20,6 +20,7 @@ Domodule_Capteur::Domodule_Capteur(const char i_ps8_nomModule[24], uint8_t i_u8_
 
 Domodule_Capteur::~Domodule_Capteur()
 {
+  m_TimerModule.Delete();
 }
 
 void Domodule_Capteur::setConfigPort(uint8_t i_u8_numPort, bool i_b_OutmodeInverse_InPullup)

@@ -18,6 +18,7 @@ Domodule_Capteur_Numerique::Domodule_Capteur_Numerique(const char i_ps8_nomModul
 
 Domodule_Capteur_Numerique::~Domodule_Capteur_Numerique()
 {
+  m_TimerModule.Delete();
 }
 
 void Domodule_Capteur_Numerique::setConfigSurveillance(const Class_ConfigSurveillanceNumerique &i_t_ConfigSurveillance)

@@ -34,22 +34,36 @@ public:
 class Domodule_Pilotage_Voyant: public Domodule_Actionneur
 {
 public:
+  //! Constructeur de la classe
   Domodule_Pilotage_Voyant();
+  //! Destructeur de la classe
   virtual ~Domodule_Pilotage_Voyant();
 
+  //! Active la configuration du module
+  //! @param i_m_configModuleVoyant Classe contenant la configuration à appliquer
   virtual void setConfigModule(const Class_ConfigModuleVoyant &i_m_configModuleVoyant);
 
+  //! Active le clignotement
   virtual void moduleON(void) override;
+  //! Arrête le clignotement
   virtual void moduleOFF(void) override;
+  //! Active le clignotement pendant i_u32_argument secondes
+  //! @param i_u32_argument durée d'activation en secondes
   virtual void moduleDRING(uint32_t i_u32_argument) override;
 
 protected:
+  //! Timer logiciel utilisé pour gérer le clignotement du port
   Super_TimerEvent_t m_TimerBlink;
 
+  //! Valeur de l'état courant du port
   uint8_t u8_etatPort;
 
+  //! Méthode de gestion du clignotement (appelée par triggerSuperTimer)
   void BlinkPort(void);
 
+  //! Méthode statique appelée par le Super_Timer
+  //! @param valeur Non utilisé
+  //! @param Arg Pointeur vers l'instance de la classe à appeler
   static void triggerSuperTimer(uint32_t valeur, void *Arg);
 
 };

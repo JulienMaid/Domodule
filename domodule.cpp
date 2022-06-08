@@ -21,8 +21,9 @@ Domodule::Domodule(const char i_ps8_nomModule[24], uint8_t i_u8_numPort, bool i_
 
 
 
-Domodule::~Domodule() {
-  // TODO Auto-generated destructor stub
+Domodule::~Domodule()
+{
+  m_TimerModule.Delete();
 }
 
 char* Domodule::getModuleName(void)

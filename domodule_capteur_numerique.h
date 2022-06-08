@@ -82,18 +82,26 @@ public:
 class Domodule_Capteur_Numerique: public Domodule_Capteur
 {
 public:
+  //! Constructeur de la classe
+  //! @param i_ps8_nomModule Nom du module
+  //! @param i_u8_numPort Numéro du port à utiliser
+  //! @param i_b_OutmodeInverse_InPullup Active ou non le pullup interne du port
   Domodule_Capteur_Numerique(const char i_ps8_nomModule[24] = "", uint8_t i_u8_numPort = 0,
       bool i_b_OutmodeInverse_InPullup = false);
+  //! Destructeur de la classe
   virtual ~Domodule_Capteur_Numerique();
 
+  //! Configure la surveillance du port du capteur
   virtual void setConfigSurveillance(const Class_ConfigSurveillanceNumerique &i_t_ConfigSurveillance);
 
+  //! Démarre la surveillance du port numérique
   virtual void DemarrerSurveillance(void) override;
 
+  //! Retourne la valeur du port numérique
   virtual uint16_t DonnerValeurCapteur(void) override;
 
-
 protected:
+  //! Fonction de surveillance du port numérique (exécutée toutes "u32_periodePollingMs" ms)
   virtual void surveillanceNiveau(void) override;
 
 };

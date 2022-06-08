@@ -21,6 +21,7 @@ Domodule_Actionneur::Domodule_Actionneur(const char i_ps8_nomModule[24], uint8_t
 
 Domodule_Actionneur::~Domodule_Actionneur()
 {
+  m_TimerModule.Delete();
 }
 
 void Domodule_Actionneur::setConfigPort(uint8_t i_u8_numPort, bool i_b_OutmodeInverse_InPullup)

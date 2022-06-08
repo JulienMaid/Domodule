@@ -13,13 +13,12 @@
 Domodule_Pilotage_Voyant::Domodule_Pilotage_Voyant() :
     u8_etatPort(u8_EtatON)
 {
-  // TODO Auto-generated constructor stub
-
 }
 
 Domodule_Pilotage_Voyant::~Domodule_Pilotage_Voyant()
 {
-  // TODO Auto-generated destructor stub
+  m_TimerModule.Delete();
+  m_TimerBlink.Delete();
 }
 
 void Domodule_Pilotage_Voyant::moduleON(void)
