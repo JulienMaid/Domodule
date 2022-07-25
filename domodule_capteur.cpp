@@ -99,7 +99,7 @@ uint8_t Domodule_Capteur::decodeOrdre(const String &i_message, String &o_reponse
 
     o_reponse += " - ";
 
-    o_reponse += getEtatModule();
+    o_reponse += getEtatModuleString();
 
     o_reponse += " ";
 

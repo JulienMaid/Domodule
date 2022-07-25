@@ -31,7 +31,7 @@ char* Domodule::getModuleName(void)
   return m_ConfigModule.ts8_nomModule;
 }
 
-String Domodule::getEtatModule(void)
+String Domodule::getEtatModuleString(void)
 {
   String l_t_EtatModule = "";
 
@@ -220,4 +220,9 @@ void Domodule::declencherTrigActions(void)
         ActionADeclencher[u8_index].Arg_trigAction);
     }
   }
+}
+
+e_etatModule_t Domodule::getEtatModule(void)
+{
+  return m_ConfigModule.e_etatModule;
 }

@@ -140,7 +140,9 @@ public:
   char* getModuleName(void);
 
   //! Retourne une String avec l'état en cours (ON, OFF, etc...)
-  String getEtatModule(void);
+  String getEtatModuleString(void);
+
+  e_etatModule_t getEtatModule(void);
 
   //! Définie l'action du module quand il est déclenché par un événement extérieur
   void setActionTriggered(e_typeActionTriggered_t i_e_typeAction =
