@@ -15,8 +15,19 @@
 
 Domodule_Actionneur::Domodule_Actionneur(const char i_ps8_nomModule[24], uint8_t i_u8_numPort,
     bool i_b_OutmodeInverse_InPullup) :
-    Domodule(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup), u8_EtatON(HIGH), u8_EtatOFF(LOW)
+    Domodule(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup)
 {
+  if (i_b_OutmodeInverse_InPullup == true)
+  {
+    u8_EtatON = LOW;
+    u8_EtatOFF = HIGH;
+  }
+  else
+  {
+    u8_EtatON = HIGH;
+    u8_EtatOFF = LOW;
+  }
+
 }
 
 Domodule_Actionneur::~Domodule_Actionneur()
