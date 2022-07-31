@@ -14,6 +14,8 @@
 #include "timer_sw.h"
 #include <Arduino.h>
 
+class Domodule;
+
 //! Etat possible du Module
 enum class e_etatModule_t
 {
@@ -95,7 +97,7 @@ public:
 };
 
 //! Définition du type de pointeur de fonction à utiliser pour les événements à déclencher
-typedef void (*pf_trigAction_t)(e_etatModule_t, uint32_t, void*);
+typedef void (*pf_trigAction_t)(e_etatModule_t, uint32_t, Domodule*);
 
 //! Classe pour stocker un action à déclencher
 class Class_ActionADeclencher
@@ -110,7 +112,7 @@ public:
   pf_trigAction_t pf_trigAction;
 
   //! Argument à fournir la fonction pointée par pf_trigAction
-  void *Arg_trigAction;
+  Domodule *Arg_trigAction;
 };
 
 
@@ -130,7 +132,7 @@ public:
   //! @param Arg Pointeur vers les argument passé à la fonction à exécuter
   //! @param i_u8_index Numéro d'index des actions (max 10)
   uint8_t setPfTrigAction(pf_trigAction_t pf_trigAction,
-      void *Arg, uint8_t i_u8_index = 0);
+      Domodule *Arg, uint8_t i_u8_index = 0);
 
   //! Configure le module (numéro de port, etc...)
   //! @param i_m_configModule Configuration du module à appliquer
@@ -163,7 +165,7 @@ public:
   virtual void moduleDRING(uint32_t i_u32_argument) = 0;
 
   //! Fonction statique appelée pour déclencher les modules par des événement extérieurs (ou par d'autres modules)
-  static void trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, void *Arg);
+  static void trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, Domodule *Arg);
 
 protected:
   //! Configure le port utilisé par le module

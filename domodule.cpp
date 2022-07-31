@@ -59,7 +59,7 @@ String Domodule::getEtatModuleString(void)
 }
 
 uint8_t Domodule::setPfTrigAction(
-    pf_trigAction_t i_pf_trigAction, void *Arg, uint8_t i_u8_index)
+    pf_trigAction_t i_pf_trigAction, Domodule *Arg, uint8_t i_u8_index)
 {
   if (i_u8_index < u8_tailleActionADeclencher)
   {
@@ -142,7 +142,7 @@ void Domodule::setActionTriggered(e_typeActionTriggered_t i_e_typeAction,
   }
 }
 
-void Domodule::trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, void *Arg)
+void Domodule::trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, Domodule *Arg)
 {
   e_etatModule_t e_etatModule = i_e_etatModule;
   uint32_t u32_valeurDring = i_u32_valeur;
