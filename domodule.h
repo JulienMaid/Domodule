@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_H_
-#define DOMODULE_H_
+#pragma once
 
 #define TRACE_DEBUG_ACTIVES
 
@@ -194,5 +193,3 @@ protected:
   //! Tableau listant toutes les actions à déclencher
   Class_ActionADeclencher ActionADeclencher[u8_tailleActionADeclencher];
 };
-
-#endif /* DOMODULE_H_ */

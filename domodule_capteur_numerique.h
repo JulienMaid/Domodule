@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_CAPTEUR_NUMERIQUE_H_
-#define DOMODULE_CAPTEUR_NUMERIQUE_H_
+#pragma once
 
 #include "domodule_capteur.h"
 
@@ -106,4 +105,3 @@ protected:
 
 };
 
-#endif /* DOMODULE_CAPTEUR_NUMERIQUE_H_ */

@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_WATCHDOG_H_
-#define DOMODULE_WATCHDOG_H_
+#pragma once
 
 #include "domodule_capteur.h"
 
@@ -55,5 +54,3 @@ protected:
   //! Methode statique appelé par le timer logiciel en fin de compte à rebours
   static void trigWatchdogStatic(uint32_t i_u32_valeur, void *Arg);
 };
-
-#endif /* DOMODULE_WATCHDOG_H_ */

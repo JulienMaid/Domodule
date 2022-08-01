@@ -1,5 +1,4 @@
-#ifndef TIMERSW_H
-#define TIMERSW_H
+#pragma once
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -76,6 +75,3 @@ public:
 };
 
 void Inc_Timer(void);
-
-
-#endif // TIMERSW_H

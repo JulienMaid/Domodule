@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef SUPER_TIMER_SW_H_
-#define SUPER_TIMER_SW_H_
+#pragma once
 
 #include "timer_sw.h"
 
@@ -41,5 +40,3 @@ public:
 
   void Reload(void);
 };
-
-#endif /* SUPER_TIMER_SW_H_ */

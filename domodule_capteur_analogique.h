@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_CAPTEUR_ANALOGIQUE_H_
-#define DOMODULE_CAPTEUR_ANALOGIQUE_H_
+#pragma once
 
 #include "domodule_capteur.h"
 
@@ -64,4 +63,3 @@ protected:
 
 };
 
-#endif /* DOMODULE_CAPTEUR_ANALOGIQUE_H_ */

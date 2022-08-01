@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_PILOTAGE_VOYANT_H_
-#define DOMODULE_PILOTAGE_VOYANT_H_
+#pragma once
 
 #include "domodule_actionneur.h"
 #include "super_timer_sw.h"
@@ -67,5 +66,3 @@ protected:
   static void triggerSuperTimer(uint32_t valeur, void *Arg);
 
 };
-
-#endif /* DOMODULE_PILOTAGE_VOYANT_H_ */

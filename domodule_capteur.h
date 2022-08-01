@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_CAPTEUR_H_
-#define DOMODULE_CAPTEUR_H_
+#pragma once
 
 #include "domodule.h"
 
@@ -116,5 +115,3 @@ protected:
   //! Nombre de période restante pour valider la transition
   uint8_t u8_periodeFiltrageRestante = 0;
 };
-
-#endif /* DOMODULE_CAPTEUR_H_ */

@@ -5,8 +5,7 @@
  *      Author: julien
  */
 
-#ifndef DOMODULE_ACTIONNEUR_H_
-#define DOMODULE_ACTIONNEUR_H_
+#pragma once
 
 #include "domodule.h"
 
@@ -49,5 +48,3 @@ protected:
   //! Valeur de l'état OFF sur le port de sortie
   uint8_t u8_EtatOFF;
 };
-
-#endif /* DOMODULE_ACTIONNEUR_H_ */
