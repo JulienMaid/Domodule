@@ -24,7 +24,7 @@ Domodule_Pilotage_Voyant::~Domodule_Pilotage_Voyant()
 void Domodule_Pilotage_Voyant::moduleON(void)
 {
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : ON");
+  SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : ON");
 #endif
   digitalWrite(m_ConfigModule.u8_numPort, u8_EtatOFF);
   u8_etatPort = u8_EtatON;
@@ -36,7 +36,7 @@ void Domodule_Pilotage_Voyant::moduleON(void)
 void Domodule_Pilotage_Voyant::moduleOFF(void)
 {
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : OFF");
+  SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : OFF");
 #endif
 
   m_TimerModule.Stop();

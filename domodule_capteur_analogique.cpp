@@ -21,7 +21,6 @@ Domodule_Capteur_Analogique::~Domodule_Capteur_Analogique()
 {
 }
 
-
 void Domodule_Capteur_Analogique::setConfigSurveillance(
     const Class_ConfigSurveillanceAnalogique &i_t_ConfigSurveillance)
 {
@@ -47,7 +46,6 @@ void Domodule_Capteur_Analogique::surveillanceNiveau(void)
 {
   uint16_t u16_valeurPortCourante = analogRead(m_ConfigModule.u8_numPort);
   bool b_TrigActionAEnvoyer = false;
-
 
   if (e_declencherEtat == e_declencherEtat_t::declencherEtatHaut)
   {
@@ -97,7 +95,7 @@ void Domodule_Capteur_Analogique::surveillanceNiveau(void)
       {
         u16_valeurPort = u16_valeurPortCourante;
 #ifdef TRACE_DEBUG_ACTIVES
-        Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Haut");
+        SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Haut");
 #endif
         b_TrigActionAEnvoyer = true;
       }
@@ -120,7 +118,7 @@ void Domodule_Capteur_Analogique::surveillanceNiveau(void)
       {
         u16_valeurPort = u16_valeurPortCourante;
 #ifdef TRACE_DEBUG_ACTIVES
-        Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Bas");
+        SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Bas");
 #endif
         b_TrigActionAEnvoyer = true;
       }

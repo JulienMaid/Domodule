@@ -19,8 +19,6 @@ Domodule::Domodule(const char i_ps8_nomModule[24], uint8_t i_u8_numPort, bool i_
   delete temp_configModule;
 }
 
-
-
 Domodule::~Domodule()
 {
   m_TimerModule.Delete();
@@ -58,8 +56,7 @@ String Domodule::getEtatModuleString(void)
   return l_t_EtatModule;
 }
 
-uint8_t Domodule::setPfTrigAction(
-    pf_trigAction_t i_pf_trigAction, Domodule *Arg, uint8_t i_u8_index)
+uint8_t Domodule::setPfTrigAction(pf_trigAction_t i_pf_trigAction, Domodule *Arg, uint8_t i_u8_index)
 {
   if (i_u8_index < u8_tailleActionADeclencher)
   {
@@ -88,7 +85,7 @@ void Domodule::setConfigModule(const Class_ConfigModule &i_m_configModule)
   setActionTriggered(e_typeActionTriggered_t::Action_Identique);
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, this->getModuleName(), ": Config OK");
+  SEND_TRACE_TEXT(DBG1, this->getModuleName(), ": Config OK");
 #endif
 }
 
@@ -113,19 +110,19 @@ uint8_t Domodule::predecodeOrdre(const String &i_message, String &o_ordre, uint3
   if (nomModule.compareTo(module) != 0)
   {
 #ifdef TRACE_DEBUG_ACTIVES
-    Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, ": Nom Module KO");
+    SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, ": Nom Module KO");
 #endif
     return 1;
   }
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, ": Nom Module OK");
+  SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, ": Nom Module OK");
 #endif
   return 0;
 }
 
-void Domodule::setActionTriggered(e_typeActionTriggered_t i_e_typeAction,
-    e_etatModule_t i_e_etatModule, uint32_t i_u32_dureeDring)
+void Domodule::setActionTriggered(e_typeActionTriggered_t i_e_typeAction, e_etatModule_t i_e_etatModule,
+    uint32_t i_u32_dureeDring)
 {
   m_ActionTriggered.e_typeActionTriggered = i_e_typeAction;
 
@@ -150,7 +147,7 @@ void Domodule::trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, 
   Domodule *DomoduleInterne = (Domodule*) Arg;
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, "trigAction => ", DomoduleInterne->m_ConfigModule.ts8_nomModule);
+  SEND_TRACE_TEXT(DBG1, "trigAction => ", DomoduleInterne->m_ConfigModule.ts8_nomModule);
 #endif
 
   if (DomoduleInterne->m_ActionTriggered.e_typeActionTriggered == e_typeActionTriggered_t::Action_Identique)
@@ -170,7 +167,7 @@ void Domodule::trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, 
     else
     {
 #ifdef TRACE_DEBUG_ACTIVES
-      Send_Trace_Text(DBG1, DomoduleInterne->m_ConfigModule.ts8_nomModule,
+      SEND_TRACE_TEXT(DBG1, DomoduleInterne->m_ConfigModule.ts8_nomModule,
           " : Action Triggered DRING interdite en module Inversé");
 #endif
       return;
@@ -187,7 +184,7 @@ void Domodule::trigAction(e_etatModule_t i_e_etatModule, uint32_t i_u32_valeur, 
   else
   {
 #ifdef TRACE_DEBUG_ACTIVES
-    Send_Trace_Text(DBG1, DomoduleInterne->m_ConfigModule.ts8_nomModule, " : Action Triggered inconnue");
+    SEND_TRACE_TEXT(DBG1, DomoduleInterne->m_ConfigModule.ts8_nomModule, " : Action Triggered inconnue");
 #endif
     return;
   }
@@ -217,7 +214,7 @@ void Domodule::declencherTrigActions(void)
     if (ActionADeclencher[u8_index].pf_trigAction != NULL)
     {
       ActionADeclencher[u8_index].pf_trigAction(m_ConfigModule.e_etatModule, 0,
-        ActionADeclencher[u8_index].Arg_trigAction);
+          ActionADeclencher[u8_index].Arg_trigAction);
     }
   }
 }

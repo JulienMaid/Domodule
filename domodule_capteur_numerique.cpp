@@ -48,7 +48,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
     if (u8_periodeFiltrageRestante == 0)
     {
 #ifdef TRACE_DEBUG_ACTIVES
-      Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Haut");
+      SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Haut");
 #endif
       u16_valeurPort = u16_valeurPortCourante;
       b_TrigActionAEnvoyer = true;
@@ -63,7 +63,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
     if (u8_periodeFiltrageRestante == 0)
     {
 #ifdef TRACE_DEBUG_ACTIVES
-      Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Bas");
+      SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Bas");
 #endif
       u16_valeurPort = u16_valeurPortCourante;
       b_TrigActionAEnvoyer = true;
@@ -87,7 +87,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
             || (e_declencherEtat == e_declencherEtat_t::declecherTransitionHautBas))
         {
 #ifdef TRACE_DEBUG_ACTIVES
-          Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Haut");
+          SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Haut");
 #endif
           b_TrigActionAEnvoyer = true;
         }
@@ -98,7 +98,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
             || (e_declencherEtat == e_declencherEtat_t::declecherTransitionHautBas))
         {
 #ifdef TRACE_DEBUG_ACTIVES
-          Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Bas");
+          SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Bas");
 #endif
           b_TrigActionAEnvoyer = true;
         }
@@ -119,6 +119,6 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
     declencherTrigActions();
     b_TrigActionAEnvoyer = false;
   }
-  
+
 }
 

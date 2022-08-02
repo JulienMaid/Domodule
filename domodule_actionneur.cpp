@@ -52,11 +52,10 @@ void Domodule_Actionneur::setConfigPort(uint8_t i_u8_numPort, bool i_b_OutmodeIn
   digitalWrite(i_u8_numPort, u8_EtatOFF);
 }
 
-
 void Domodule_Actionneur::moduleON(void)
 {
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : ON");
+  SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : ON");
 #endif
 
   m_TimerModule.Stop();
@@ -67,7 +66,7 @@ void Domodule_Actionneur::moduleON(void)
 void Domodule_Actionneur::moduleOFF(void)
 {
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : OFF");
+  SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : OFF");
 #endif
 
   m_TimerModule.Stop();
@@ -94,17 +93,14 @@ void Domodule_Actionneur::setNouvelEtat(e_etatModule_t i_e_nouvelEtat)
   }
 }
 
-
-
 void Domodule_Actionneur::triggerOFF(uint32_t valeur, void *Arg)
 {
   (void) valeur;
 
-
   Domodule_Actionneur *DomoduleInterne = (Domodule_Actionneur*) Arg;
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG3, DomoduleInterne->m_ConfigModule.ts8_nomModule, " - triggerOFF");
+  SEND_TRACE_TEXT(DBG3, DomoduleInterne->m_ConfigModule.ts8_nomModule, " - triggerOFF");
 #endif
 
   DomoduleInterne->moduleOFF();
@@ -117,7 +113,7 @@ void Domodule_Actionneur::triggerON(uint32_t valeur, void *Arg)
   Domodule_Actionneur *DomoduleInterne = (Domodule_Actionneur*) Arg;
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(DBG3, DomoduleInterne->m_ConfigModule.ts8_nomModule, " - triggerON");
+  SEND_TRACE_TEXT(DBG3, DomoduleInterne->m_ConfigModule.ts8_nomModule, " - triggerON");
 #endif
 
   DomoduleInterne->moduleON();
@@ -136,22 +132,22 @@ uint8_t Domodule_Actionneur::decodeOrdre(const String &i_message, String &o_repo
   if (ordre.compareTo("ON") == 0)
   {
 #ifdef TRACE_DEBUG_ACTIVES
-    Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre ON");
+    SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre ON");
 #endif
     moduleON();
   }
   else if (ordre.compareTo("OFF") == 0)
   {
 #ifdef TRACE_DEBUG_ACTIVES
-    Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre OFF");
+    SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre OFF");
 #endif
     moduleOFF();
   }
   else if (ordre.compareTo("DRING") == 0)
   {
 #ifdef TRACE_DEBUG_ACTIVES
-    Send_Trace_Text(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre DRING");
-    Send_Trace_Num(DBG1, "Valeur DRING", u32_valeur);
+    SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Ordre DRING");
+    SEND_TRACE_NUM(DBG1, "Valeur DRING", u32_valeur);
 #endif
     moduleDRING(u32_valeur);
   }

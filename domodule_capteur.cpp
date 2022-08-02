@@ -17,7 +17,6 @@ Domodule_Capteur::Domodule_Capteur(const char i_ps8_nomModule[24], uint8_t i_u8_
 {
 }
 
-
 Domodule_Capteur::~Domodule_Capteur()
 {
   m_TimerModule.Delete();
@@ -46,8 +45,7 @@ void Domodule_Capteur::setConfigSurveillance(const Class_ConfigSurveillance &i_t
 void Domodule_Capteur::DemarrerSurveillance(void)
 {
   u8_periodeFiltrageRestante = u8_nbrePeriodeFiltrage;
-  m_TimerModule.Init(fonctionSurveillance, u32_periodePollingMs, Periodic_Timer,
-      this);
+  m_TimerModule.Init(fonctionSurveillance, u32_periodePollingMs, Periodic_Timer, this);
   m_TimerModule.Start();
 
   setNouvelEtat(e_etatModule_t::MODULE_ON);
@@ -134,7 +132,7 @@ void Domodule_Capteur::declencherTrigActions(void)
   uint8_t u8_index = 0;
 
 #ifdef TRACE_DEBUG_ACTIVES
-  Send_Trace_Text(INFO, this->getModuleName(), ": Déclenchement Trig Actions");
+  SEND_TRACE_TEXT(INFO, this->getModuleName(), ": Déclenchement Trig Actions");
 #endif
 
   for (u8_index = 0; u8_index < u8_tailleActionADeclencher; u8_index++)
