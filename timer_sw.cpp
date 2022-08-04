@@ -1,4 +1,3 @@
-
 #include "timer_sw.h"
 #include <stdint.h>
 #include <string.h>
@@ -14,7 +13,7 @@
 
 bool TimerHwStarted;
 
-TimerEvent_t * TimerEvent_t::TimerListHead = NULL;
+TimerEvent_t *TimerEvent_t::TimerListHead = NULL;
 bool TimerEvent_t::IRQ_Timer_SW_En_Cours = false;
 
 TimerEvent_t::TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Perodic,
@@ -23,51 +22,56 @@ TimerEvent_t::TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t re
   Init(Callback_Fct, remainingTime, Perodic, ArgCallBack, Label);
 }
 
-TimerEvent_t::TimerEvent_t( void )
+TimerEvent_t::TimerEvent_t(void)
 {
   Init(NULL, 0, false, NULL);
 }
 
-TimerEvent_t::TimerEvent_t(TimerEvent_t & Timer)
-{
-  *this = Timer;
-}
-
-TimerEvent_t & TimerEvent_t::operator=(TimerEvent_t const & Timer)
+TimerEvent_t::TimerEvent_t(TimerEvent_t &Timer)
 {
   memcpy(this, &Timer, sizeof(TimerEvent_t));
 
-  if (TimerExists(this) == true)
+  if (TimerExists(&Timer) == true)
   {
-    TimerDelete(this);
+    this->InsertTimer();
+  }
+
+}
+
+TimerEvent_t& TimerEvent_t::operator=(TimerEvent_t const &Timer)
+{
+  memcpy(this, &Timer, sizeof(TimerEvent_t));
+
+  if (TimerExists(&Timer) == true)
+  {
     this->InsertTimer();
   }
 
   return *this;
 }
 
-bool TimerEvent_t::operator==(TimerEvent_t const & Timer1)
+bool TimerEvent_t::operator==(TimerEvent_t const &Timer1)
 {
-  if(ReloadValue != Timer1.ReloadValue)
+  if (ReloadValue != Timer1.ReloadValue)
     return false;
 
-  if(Callback != (void *)&Timer1.Callback)
+  if (Callback != (void*) &Timer1.Callback)
     return false;
 
-  if(Periodic != Timer1.Periodic)
+  if (Periodic != Timer1.Periodic)
     return false;
 
   return true;
 }
 
-TimerEvent_t::~TimerEvent_t( void )
+TimerEvent_t::~TimerEvent_t(void)
 {
   TimerDelete(this);
 }
 
 void TimerEvent_t::Start()
 {
-  if(TimerHwStarted == true)
+  if (TimerHwStarted == true)
     TimerHwStop();
 
   Reload();
@@ -75,7 +79,7 @@ void TimerEvent_t::Start()
   IsRunning = true;
 
   // si le timer n'est pas dans la liste on l'y insere
-  if(TimerExists(this) == false)
+  if (TimerExists(this) == false)
   {
 #if UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
     Send_Trace_IfNotZero(DBGX, "Erreur TimerInsterTimer", TimerInsertTimer(obj), true);
@@ -83,7 +87,6 @@ void TimerEvent_t::Start()
     InsertTimer();
 #endif // UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
   }
-
 
   TimerHwStart();
 
@@ -98,13 +101,14 @@ void TimerEvent_t::Stop()
   IsRunning = false;
 }
 
-void TimerEvent_t::Init(void (* Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Periodic, void * ArgCallBack, const char Label[])
+void TimerEvent_t::Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Periodic,
+    void *ArgCallBack, const char Label[])
 {
-  if(TimerExists(this))
+  if (TimerExists(this))
   {
-    if(!TimerDelete(this))
+    if (!TimerDelete(this))
     {
-      Init(Callback_Fct, remainingTime,Periodic, ArgCallBack, Label);
+      Init(Callback_Fct, remainingTime, Periodic, ArgCallBack, Label);
       return;
     }
   }
@@ -130,37 +134,34 @@ void TimerEvent_t::Reload(void)
   Timestamp = ReloadValue;
 }
 
-
-
-TimerTime_t TimerEvent_t::Time_Elapsed( void )
+TimerTime_t TimerEvent_t::Time_Elapsed(void)
 {
   return ReloadValue - Timestamp;
 }
 
-TimerTime_t TimerEvent_t::Time_Remaining( void )
+TimerTime_t TimerEvent_t::Time_Remaining(void)
 {
   return Timestamp;
 }
 
-bool TimerEvent_t::DoLaunchMe( void )
+bool TimerEvent_t::DoLaunchMe(void)
 {
   return Top;
 }
 
-bool TimerEvent_t::Exists( void )
+bool TimerEvent_t::Exists(void)
 {
   return TimerExists(this);
 }
 
-bool TimerEvent_t::Delete( void )
+bool TimerEvent_t::Delete(void)
 {
   return TimerDelete(this);
 }
 
-
-bool TimerEvent_t::IsTop( void )
+bool TimerEvent_t::IsTop(void)
 {
-  if(Top == true)
+  if (Top == true)
   {
 #if UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
     Send_Timer_Trace(obj->Trace_Level, obj, TIMER_TOP, true);
@@ -169,8 +170,7 @@ bool TimerEvent_t::IsTop( void )
     return true;
   }
 
-
-  if((Registered == false) && (IsRunning == true))
+  if ((Registered == false) && (IsRunning == true))
   {
 #if UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
     uint8_t Temp[60] = "Erreur TimerIsTop: Timer ";
@@ -180,7 +180,7 @@ bool TimerEvent_t::IsTop( void )
 #endif // UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
   }
 
-  if(IRQ_Timer_SW_En_Cours == true) // pour eviter de rester bloquer en boucle infinie...
+  if (IRQ_Timer_SW_En_Cours == true) // pour eviter de rester bloquer en boucle infinie...
     return true;
 
   return false;
@@ -192,18 +192,17 @@ bool TimerEvent_t::TimerClean(void)
   bool State_TimerHw_Bak;
   bool Timer_List_Cleaned = false;
 
-  if(TimerListHead == NULL)
+  if (TimerListHead == NULL)
     return false;
-
 
   State_TimerHw_Bak = TimerHwStarted;
 
-  if(TimerHwStarted == true)
+  if (TimerHwStarted == true)
     TimerHwStop();
 
   do
   {
-    if((cur->IsRunning == false) && (cur->Registered == true))
+    if ((cur->IsRunning == false) && (cur->Registered == true))
     {
 #if UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
       Send_Trace_IfNotZero(DBGX, "Erreur TimerDelete depuis TimerClean", TimerDelete(cur), true);
@@ -213,35 +212,34 @@ bool TimerEvent_t::TimerClean(void)
       Timer_List_Cleaned = true;
     }
 
-    cur = cur-> Next;
+    cur = cur->Next;
 
-    if(cur == NULL) // Pour eviter d'executer la condition (cur->Next != NULL) avec cur == NULL...
+    if (cur == NULL) // Pour eviter d'executer la condition (cur->Next != NULL) avec cur == NULL...
       break;
   }
-  while(cur->Next != NULL);
+  while (cur->Next != NULL);
 
-  if(State_TimerHw_Bak == true)
+  if (State_TimerHw_Bak == true)
     TimerHwStart();
 
   return Timer_List_Cleaned;
 }
 
-
-bool TimerEvent_t::TimerExists( TimerEvent_t *obj )
+bool TimerEvent_t::TimerExists(const TimerEvent_t *obj)
 {
-  TimerEvent_t* cur = TimerListHead;
+  TimerEvent_t *cur = TimerListHead;
   bool State_TimerHw_Bak;
 
   State_TimerHw_Bak = TimerHwStarted;
 
-  if(TimerHwStarted == true)
+  if (TimerHwStarted == true)
     TimerHwStop();
 
-  while( cur != NULL )
+  while (cur != NULL)
   {
-    if( cur == obj )
+    if (cur == obj)
     {
-      if(State_TimerHw_Bak == true)
+      if (State_TimerHw_Bak == true)
         TimerHwStart();
 
       return true;
@@ -249,27 +247,26 @@ bool TimerEvent_t::TimerExists( TimerEvent_t *obj )
     cur = cur->Next;
   }
 
-  if(State_TimerHw_Bak == true)
+  if (State_TimerHw_Bak == true)
     TimerHwStart();
 
   return false;
 }
 
-
-uint8_t TimerEvent_t::TimerDelete( TimerEvent_t *obj )
+uint8_t TimerEvent_t::TimerDelete(TimerEvent_t *obj)
 {
   bool State_TimerHw_Bak;
 
   State_TimerHw_Bak = TimerHwStarted;
 
-  if(TimerHwStarted == true)
+  if (TimerHwStarted == true)
   {
     TimerHwStop();
   }
 
-  if(TimerExists(obj) == false)
+  if (TimerExists(obj) == false)
   {
-    if(State_TimerHw_Bak == true)
+    if (State_TimerHw_Bak == true)
     {
       TimerHwStart();
     }
@@ -277,12 +274,12 @@ uint8_t TimerEvent_t::TimerDelete( TimerEvent_t *obj )
     return 0;
   }
 
-  TimerEvent_t* cur = TimerListHead;
-  TimerEvent_t* prec = NULL;
+  TimerEvent_t *cur = TimerListHead;
+  TimerEvent_t *prec = NULL;
 
-  if(cur == NULL)
+  if (cur == NULL)
   {
-    if(State_TimerHw_Bak == true)
+    if (State_TimerHw_Bak == true)
     {
       TimerHwStart();
     }
@@ -292,18 +289,18 @@ uint8_t TimerEvent_t::TimerDelete( TimerEvent_t *obj )
 
   do
   {
-    if(cur == obj) // timer trouve, on le saute dans la liste chainee
-        {
+    if (cur == obj) // timer trouve, on le saute dans la liste chainee
+    {
       obj->IsRunning = false; // Timer marque comme desactive
 
-      if(prec != NULL)
+      if (prec != NULL)
         prec->Next = cur->Next;
       else
         TimerListHead = cur->Next;
 
       obj->Registered = false;
 
-      if(State_TimerHw_Bak == true)
+      if (State_TimerHw_Bak == true)
       {
         TimerHwStart();
       }
@@ -316,15 +313,15 @@ uint8_t TimerEvent_t::TimerDelete( TimerEvent_t *obj )
 #endif // UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
 
       return 0;
-        }
+    }
 
     prec = cur;
     cur = cur->Next;
 
   }
-  while(cur != NULL);
+  while (cur != NULL);
 
-  if(State_TimerHw_Bak == true)
+  if (State_TimerHw_Bak == true)
   {
     TimerHwStart();
   }
@@ -333,9 +330,9 @@ uint8_t TimerEvent_t::TimerDelete( TimerEvent_t *obj )
 
 }
 
-uint8_t TimerEvent_t::InsertTimer( void)
+uint8_t TimerEvent_t::InsertTimer(void)
 {
-  if(TimerExists(this) == true)
+  if (TimerExists(this) == true)
     return 1;
 
   Next = TimerListHead;
@@ -347,7 +344,6 @@ uint8_t TimerEvent_t::InsertTimer( void)
   return 0;
 }
 
-
 void TimerEvent_t::setUserValeur(uint32_t value)
 {
   this->u32_userValue = value;
@@ -358,43 +354,41 @@ uint32_t TimerEvent_t::getUserValue(void)
   return this->u32_userValue;
 }
 
-
 void Inc_Timer(void)
 {
 
   bool Timers_Stopped = true;
 
   // Si pas de timer enregistre on sort !
-  if(TimerEvent_t::TimerListHead == NULL)
+  if (TimerEvent_t::TimerListHead == NULL)
   {
     TimerHwStop();
     return;
   }
 
-  TimerEvent_t * P_Timer_Courant = TimerEvent_t::TimerListHead;
-
+  TimerEvent_t *P_Timer_Courant = TimerEvent_t::TimerListHead;
 
   do
   {
-    if(P_Timer_Courant->IsRunning == true)
+    if (P_Timer_Courant->IsRunning == true)
     {
       Timers_Stopped = false;
 
-      if(P_Timer_Courant->Timestamp == 0)
+      if (P_Timer_Courant->Timestamp == 0)
       {
         //Arret du timer en cours
         P_Timer_Courant->IsRunning = false;
       }
       else
       {
-        if(P_Timer_Courant->Timestamp < DEC_TIMESTAMP)
+        if (P_Timer_Courant->Timestamp < DEC_TIMESTAMP)
           P_Timer_Courant->Timestamp = 0;
         else
           P_Timer_Courant->Timestamp -= DEC_TIMESTAMP;
 
-        if(P_Timer_Courant->Timestamp == 0)
+        if (P_Timer_Courant->Timestamp == 0)
         {
-          if(P_Timer_Courant->Callback !=NULL)
+          if (P_Timer_Courant->Callback != NULL)
           {
 #if UTILISER_TRACE_DEBUG_DS_TIMER_SW == 1
             Send_Timer_Trace(P_Timer_Courant->Trace_Level, P_Timer_Courant, TIMER_TOP, true);
@@ -408,12 +402,12 @@ void Inc_Timer(void)
           else
             P_Timer_Courant->Top = true;
 
-          if(P_Timer_Courant->Periodic == true)
+          if (P_Timer_Courant->Periodic == true)
             P_Timer_Courant->Reload();
           else
           {
             // Si le timer a ete relance dans sa fonction Callback, ne pas l'effacer !
-            if(P_Timer_Courant->Timestamp == 0)
+            if (P_Timer_Courant->Timestamp == 0)
             {
               TimerEvent_t::TimerDelete(P_Timer_Courant);
             }
@@ -425,11 +419,11 @@ void Inc_Timer(void)
 
     P_Timer_Courant = P_Timer_Courant->Next;
   }
-  while(P_Timer_Courant != NULL);
+  while (P_Timer_Courant != NULL);
 
   TimerEvent_t::TimerClean();
 
-  if(Timers_Stopped == true) // ts les timers SW sont sur stop, plus besoin du timer HW
+  if (Timers_Stopped == true) // ts les timers SW sont sur stop, plus besoin du timer HW
   {
     TimerHwStop();
   }

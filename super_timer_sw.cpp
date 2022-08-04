@@ -7,22 +7,28 @@
 
 #include "super_timer_sw.h"
 
-Super_TimerEvent_t::Super_TimerEvent_t() : TimerEvent_t()
+Super_TimerEvent_t::Super_TimerEvent_t() :
+    TimerEvent_t()
 {
-    // @TODO Auto-generated constructor stub
-    Periode = 0;
-    Mini_Periode = 0;
-    Nbre_Mini_Periodes = 0;
-    Index_Scenario = 0;
-    Nouvelle_Config = NULL;
-    Super_Periodic = false;
+  // @TODO Auto-generated constructor stub
+  Periode = 0;
+  Mini_Periode = 0;
+  Nbre_Mini_Periodes = 0;
+  Index_Scenario = 0;
+  Nouvelle_Config = NULL;
+  Super_Periodic = false;
 
 }
 
 Super_TimerEvent_t::~Super_TimerEvent_t()
 {
-    // @TODO Auto-generated destructor stub
-    TimerDelete(this);
+  // @TODO Auto-generated destructor stub
+  TimerDelete(this);
+
+  if (Nouvelle_Config != NULL)
+  {
+    delete Nouvelle_Config;
+  }
 }
 
 void Super_TimerEvent_t::Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t Arg_Mini_Periode,
@@ -39,61 +45,60 @@ void Super_TimerEvent_t::Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t
 
 void Super_TimerEvent_t::Start(void)
 {
-    TimerEvent_t::Start();
+  TimerEvent_t::Start();
 }
 
 void Super_TimerEvent_t::Reload(void)
 {
-    if(Index_Scenario == 0)
+  if (Index_Scenario == 0)
+  {
+    if (Super_Periodic == Periodic_Timer)
     {
-        if(Super_Periodic == Periodic_Timer)
-        {
-            if(Nouvelle_Config != NULL)
-            {
-                Periode = Nouvelle_Config->Periode;
-                Mini_Periode = Nouvelle_Config->Mini_Periode;
-                Nbre_Mini_Periodes = Nouvelle_Config->Nbre_Mini_Periodes;
-                delete Nouvelle_Config;
-                Nouvelle_Config = NULL;
-            }
+      if (Nouvelle_Config != NULL)
+      {
+        Periode = Nouvelle_Config->Periode;
+        Mini_Periode = Nouvelle_Config->Mini_Periode;
+        Nbre_Mini_Periodes = Nouvelle_Config->Nbre_Mini_Periodes;
+        delete Nouvelle_Config;
+        Nouvelle_Config = NULL;
+      }
 
-            Index_Scenario = Nbre_Mini_Periodes - 1;
-            Timestamp = Mini_Periode;
-        }
-        else
-        {
-            this->Stop();
-            this->Delete();
-        }
-    }
-    else if(Index_Scenario == 1)
-    {
-        Timestamp = Periode;
-        Index_Scenario--;
-
-        if(Super_Periodic != Periodic_Timer)
-        {
-            this->Stop();
-            this->Delete();
-        }
-
-
+      Index_Scenario = Nbre_Mini_Periodes - 1;
+      Timestamp = Mini_Periode;
     }
     else
     {
-        Timestamp = Mini_Periode;
-        Index_Scenario--;
-
+      this->Stop();
+      this->Delete();
     }
+  }
+  else if (Index_Scenario == 1)
+  {
+    Timestamp = Periode;
+    Index_Scenario--;
+
+    if (Super_Periodic != Periodic_Timer)
+    {
+      this->Stop();
+      this->Delete();
+    }
+
+  }
+  else
+  {
+    Timestamp = Mini_Periode;
+    Index_Scenario--;
+
+  }
 
 }
 
 void Super_TimerEvent_t::SetValue(TimerTime_t Arg_Mini_Periode, uint8_t Arg_Nbre_Mini_Periodes, TimerTime_t Arg_Periode)
 {
-    if(Nouvelle_Config == NULL)
-        Nouvelle_Config = new Super_TimerTime_t;
+  if (Nouvelle_Config == NULL)
+    Nouvelle_Config = new Super_TimerTime_t;
 
-    Nouvelle_Config->Mini_Periode = Arg_Mini_Periode;
-    Nouvelle_Config->Nbre_Mini_Periodes = Arg_Nbre_Mini_Periodes;
-    Nouvelle_Config->Periode = Arg_Periode;
+  Nouvelle_Config->Mini_Periode = Arg_Mini_Periode;
+  Nouvelle_Config->Nbre_Mini_Periodes = Arg_Nbre_Mini_Periodes;
+  Nouvelle_Config->Periode = Arg_Periode;
 }
