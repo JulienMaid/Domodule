@@ -17,8 +17,8 @@ typedef uint64_t TimerTime_t;
 class TimerEvent_t
 {
 public:
-  TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Perodic, void *ArgCallBack = NULL,
-      const char Label[] = NULL);
+  TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime,
+      bool Perodic = true, void *ArgCallBack = NULL, const char Label[] = NULL);
   TimerEvent_t(void);
   TimerEvent_t(TimerEvent_t&);
   virtual ~TimerEvent_t(void);
@@ -26,8 +26,8 @@ public:
   TimerEvent_t& operator=(TimerEvent_t const&);
   bool operator==(TimerEvent_t const&);
 
-  virtual void Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Perodic, void *ArgCallBack =
-  NULL, const char Label[] = NULL);
+  virtual void Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Perodic =
+      true, void *ArgCallBack = NULL, const char Label[] = NULL);
   virtual void Start(void);
   virtual void Stop(void);
   virtual void SetValue(TimerTime_t Time);
