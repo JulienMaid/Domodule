@@ -13,7 +13,7 @@
 
 Domodule_Capteur::Domodule_Capteur(const char i_ps8_nomModule[24], uint8_t i_u8_numPort,
     bool i_b_OutmodeInverse_InPullup) :
-    Domodule(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup)
+    Domodule(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup), u16_valeurPort(0)
 {
 }
 
@@ -60,6 +60,7 @@ void Domodule_Capteur::ArreterSurveillance(void)
 
 void Domodule_Capteur::fonctionSurveillance(uint32_t valeur, void *Arg)
 {
+  (void) valeur;
   Domodule_Capteur *Capteur = (Domodule_Capteur*) Arg;
 
   Capteur->surveillanceNiveau();

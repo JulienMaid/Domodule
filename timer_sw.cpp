@@ -16,8 +16,8 @@ bool TimerHwStarted;
 TimerEvent_t *TimerEvent_t::TimerListHead = NULL;
 bool TimerEvent_t::IRQ_Timer_SW_En_Cours = false;
 
-TimerEvent_t::TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Perodic,
-    void *ArgCallBack, const char Label[])
+TimerEvent_t::TimerEvent_t(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime,
+    bool Perodic, void *ArgCallBack, const char Label[])
 {
   Init(Callback_Fct, remainingTime, Perodic, ArgCallBack, Label);
 }
@@ -29,7 +29,7 @@ TimerEvent_t::TimerEvent_t(void)
 
 TimerEvent_t::TimerEvent_t(TimerEvent_t &Timer)
 {
-  memcpy(this, &Timer, sizeof(TimerEvent_t));
+  *this = Timer;
 
   if (TimerExists(&Timer) == true)
   {
@@ -40,7 +40,7 @@ TimerEvent_t::TimerEvent_t(TimerEvent_t &Timer)
 
 TimerEvent_t& TimerEvent_t::operator=(TimerEvent_t const &Timer)
 {
-  memcpy(this, &Timer, sizeof(TimerEvent_t));
+  *this = Timer;
 
   if (TimerExists(&Timer) == true)
   {
@@ -101,8 +101,8 @@ void TimerEvent_t::Stop()
   IsRunning = false;
 }
 
-void TimerEvent_t::Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime, bool Periodic,
-    void *ArgCallBack, const char Label[])
+void TimerEvent_t::Init(void (*Callback_Fct)(uint32_t, void*), TimerTime_t remainingTime,
+    bool Periodic, void *ArgCallBack, const char Label[])
 {
   if (TimerExists(this))
   {
