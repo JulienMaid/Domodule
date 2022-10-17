@@ -10,8 +10,8 @@
 #include "trace_debug.h"
 #endif
 
-Domodule_Capteur_Numerique::Domodule_Capteur_Numerique(const char i_ps8_nomModule[24], uint8_t i_u8_numPort,
-    bool i_b_OutmodeInverse_InPullup) :
+Domodule_Capteur_Numerique::Domodule_Capteur_Numerique(const char i_ps8_nomModule[24],
+    uint8_t i_u8_numPort, bool i_b_OutmodeInverse_InPullup) :
     Domodule_Capteur(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup)
 {
 }
@@ -21,7 +21,8 @@ Domodule_Capteur_Numerique::~Domodule_Capteur_Numerique()
   m_TimerModule.Delete();
 }
 
-void Domodule_Capteur_Numerique::setConfigSurveillance(const Class_ConfigSurveillanceNumerique &i_t_ConfigSurveillance)
+void Domodule_Capteur_Numerique::setConfigSurveillance(
+    const Class_ConfigSurveillanceNumerique &i_t_ConfigSurveillance)
 {
   Domodule_Capteur::setConfigSurveillance(i_t_ConfigSurveillance);
 }
@@ -43,12 +44,13 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
   uint16_t u16_valeurPortCourante = digitalRead(m_ConfigModule.u8_numPort);
   bool b_TrigActionAEnvoyer = false;
 
-  if ((e_declencherEtat == e_declencherEtat_t::declencherEtatHaut) && (u16_valeurPortCourante == HIGH))
+  if ((e_declencherEtat == e_declencherEtat_t::declencherEtatHaut)
+      && (u16_valeurPortCourante == HIGH))
   {
     if (u8_periodeFiltrageRestante == 0)
     {
 #ifdef TRACE_DEBUG_ACTIVES
-      SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Haut");
+      SEND_VTRACE(DBG1, " : Port Etat Haut", m_ConfigModule.ts8_nomModule);
 #endif
       u16_valeurPort = u16_valeurPortCourante;
       b_TrigActionAEnvoyer = true;
@@ -58,12 +60,13 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
       u8_periodeFiltrageRestante--;
     }
   }
-  else if ((e_declencherEtat == e_declencherEtat_t::declencherEtatBas) && (u16_valeurPortCourante == LOW))
+  else if ((e_declencherEtat == e_declencherEtat_t::declencherEtatBas)
+      && (u16_valeurPortCourante == LOW))
   {
     if (u8_periodeFiltrageRestante == 0)
     {
 #ifdef TRACE_DEBUG_ACTIVES
-      SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Etat Bas");
+      SEND_VTRACE(DBG1, " : Port Etat Bas", m_ConfigModule.ts8_nomModule);
 #endif
       u16_valeurPort = u16_valeurPortCourante;
       b_TrigActionAEnvoyer = true;
@@ -87,7 +90,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
             || (e_declencherEtat == e_declencherEtat_t::declecherTransitionHautBas))
         {
 #ifdef TRACE_DEBUG_ACTIVES
-          SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Haut");
+          SEND_VTRACE(DBG1, "%s : Port Transition Etat Haut", m_ConfigModule.ts8_nomModule);
 #endif
           b_TrigActionAEnvoyer = true;
         }
@@ -98,7 +101,7 @@ void Domodule_Capteur_Numerique::surveillanceNiveau(void)
             || (e_declencherEtat == e_declencherEtat_t::declecherTransitionHautBas))
         {
 #ifdef TRACE_DEBUG_ACTIVES
-          SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Transition Etat Bas");
+          SEND_VTRACE(DBG1, "%s : Port Transition Etat Bas", m_ConfigModule.ts8_nomModule);
 #endif
           b_TrigActionAEnvoyer = true;
         }

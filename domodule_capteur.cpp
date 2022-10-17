@@ -133,7 +133,7 @@ void Domodule_Capteur::declencherTrigActions(void)
   uint8_t u8_index = 0;
 
 #ifdef TRACE_DEBUG_ACTIVES
-  SEND_TRACE_TEXT(INFO, this->getModuleName(), ": Déclenchement Trig Actions");
+  SEND_VTRACE(INFO, "%s : Déclenchement Trig Actions", this->getModuleName());
 #endif
 
   for (u8_index = 0; u8_index < u8_tailleActionADeclencher; u8_index++)

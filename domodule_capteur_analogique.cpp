@@ -10,10 +10,10 @@
 #include "trace_debug.h"
 #endif
 
-Domodule_Capteur_Analogique::Domodule_Capteur_Analogique(const char i_ps8_nomModule[24], uint8_t i_u8_numPort,
-    bool i_b_OutmodeInverse_InPullup) :
-    Domodule_Capteur(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup), u16_seuilDeclenchement(512), u16_hystereris(
-        0)
+Domodule_Capteur_Analogique::Domodule_Capteur_Analogique(const char i_ps8_nomModule[24],
+    uint8_t i_u8_numPort, bool i_b_OutmodeInverse_InPullup) :
+    Domodule_Capteur(i_ps8_nomModule, i_u8_numPort, i_b_OutmodeInverse_InPullup), u16_seuilDeclenchement(
+        512), u16_hystereris(0)
 {
 }
 
@@ -89,13 +89,14 @@ void Domodule_Capteur_Analogique::surveillanceNiveau(void)
   }
   else if (e_declencherEtat == e_declencherEtat_t::declencherTransitionEtatHaut)
   {
-    if ((u16_valeurPortCourante > u16_seuilDeclenchement) && (u16_valeurPort < u16_seuilDeclenchement))
+    if ((u16_valeurPortCourante > u16_seuilDeclenchement)
+        && (u16_valeurPort < u16_seuilDeclenchement))
     {
       if (u8_periodeFiltrageRestante == 0)
       {
         u16_valeurPort = u16_valeurPortCourante;
 #ifdef TRACE_DEBUG_ACTIVES
-        SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Haut");
+        SEND_VTRACE(DBG1, "%s : Port Analogique Haut", m_ConfigModule.ts8_nomModule);
 #endif
         b_TrigActionAEnvoyer = true;
       }
@@ -112,13 +113,14 @@ void Domodule_Capteur_Analogique::surveillanceNiveau(void)
   }
   else if (e_declencherEtat == e_declencherEtat_t::declencherTransitionEtatBas)
   {
-    if ((u16_valeurPortCourante < u16_seuilDeclenchement) && (u16_valeurPort > u16_seuilDeclenchement))
+    if ((u16_valeurPortCourante < u16_seuilDeclenchement)
+        && (u16_valeurPort > u16_seuilDeclenchement))
     {
       if (u8_periodeFiltrageRestante == 0)
       {
         u16_valeurPort = u16_valeurPortCourante;
 #ifdef TRACE_DEBUG_ACTIVES
-        SEND_TRACE_TEXT(DBG1, m_ConfigModule.ts8_nomModule, " : Port Analogique Bas");
+        SEND_VTRACE(DBG1, "%s : Port Analogique Bas", m_ConfigModule.ts8_nomModule);
 #endif
         b_TrigActionAEnvoyer = true;
       }
